@@ -208,7 +208,7 @@
                     </li>
                     <li class="flex justify-between items-center">
                         <span>Nordeste (NE)</span>
-                        <span class="font-bold" id="dom-ne">0</span>
+                        <span class="font-bold" id="dom-ne">4</span>
                     </li>
                     <li class="flex justify-between items-center">
                         <span>Centro-Oeste (CO)</span>
@@ -216,7 +216,7 @@
                     </li>
                     <li class="flex justify-between items-center">
                         <span>Sudeste (SE)</span>
-                        <span class="font-bold" id="dom-se">0</span>
+                        <span class="font-bold" id="dom-se">6</span>
                     </li>
                     <li class="flex justify-between items-center">
                         <span>Sul (S)</span>
@@ -253,7 +253,7 @@
     </div>
 
     <script>
-        // Dados corrigidos conforme sua última solicitação
+        // Dados corrigidos conforme sua última solicitação e análise do CSV/Print
         const finalData = {
             c1: "FLAMENGO",
             d1: "FLA",
@@ -266,18 +266,17 @@
             f1: "29%",
             bp1: "74", 
             bo1: "26 XP",
-            e7: "1", // Corrigido para 1 (Vitórias Totais)
+            e7: "1",
             f10: "0",
             c21: "28", c22: "28", c23: "27", c24: "30", c25: "113",
-            // Conquistas baseadas nas colunas AQ2 até AU2
+            // Conquistas corrigidas baseadas nas células D14 até D18 para o Flamengo
             conquistas: {
-                n: "0",  // AQ2
-                ne: "0", // AR2
-                co: "0", // AS2
-                se: "0", // AT2
-                s: "0"   // AU2
+                n: "0",  // D14
+                ne: "4", // D15 (Corrigido conforme sua análise)
+                co: "0", // D16
+                se: "6", // D17 (Corrigido conforme sua análise)
+                s: "0"   // D18
             },
-            // Crônicas baseadas nas colunas I, J, M, T e U
             cronicas: [
                 { jogo: "8", local: "CASA", adv: "SAO", placar: "1 x 2", res: "DER" },
                 { jogo: "13", local: "FORA", adv: "INT", placar: "1 x 1", res: "EMP" },
@@ -321,7 +320,7 @@
             document.getElementById('t4-val').innerText = data.c24;
             document.getElementById('total-garrisons').innerText = data.c25;
 
-            // Atualiza Conquistas
+            // Atualiza Conquistas com os novos mapeamentos corrigidos (D14-D18)
             document.getElementById('dom-n').innerText = data.conquistas.n;
             document.getElementById('dom-ne').innerText = data.conquistas.ne;
             document.getElementById('dom-co').innerText = data.conquistas.co;
