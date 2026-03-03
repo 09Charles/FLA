@@ -97,6 +97,11 @@
         .result-vit { color: #1b5e20; font-weight: bold; }
         .result-der { color: #b71c1c; font-weight: bold; }
         .result-emp { color: #455a64; font-weight: bold; }
+
+        .meta-text {
+            color: rgba(44, 30, 22, 0.6);
+            font-size: 0.9em;
+        }
     </style>
 </head>
 <body class="flex justify-center items-start min-h-screen">
@@ -204,23 +209,33 @@
                 <ul class="space-y-3">
                     <li class="flex justify-between items-center">
                         <span>Norte (N)</span>
-                        <span class="font-bold" id="dom-n">0</span>
+                        <span class="font-bold">
+                            <span id="dom-n">0</span><span class="meta-text">/5</span>
+                        </span>
                     </li>
                     <li class="flex justify-between items-center">
                         <span>Nordeste (NE)</span>
-                        <span class="font-bold" id="dom-ne">4</span>
+                        <span class="font-bold">
+                            <span id="dom-ne">4</span><span class="meta-text">/10</span>
+                        </span>
                     </li>
                     <li class="flex justify-between items-center">
                         <span>Centro-Oeste (CO)</span>
-                        <span class="font-bold" id="dom-co">0</span>
+                        <span class="font-bold">
+                            <span id="dom-co">0</span><span class="meta-text">/0</span>
+                        </span>
                     </li>
                     <li class="flex justify-between items-center">
                         <span>Sudeste (SE)</span>
-                        <span class="font-bold" id="dom-se">6</span>
+                        <span class="font-bold">
+                            <span id="dom-se">6</span><span class="meta-text">/120</span>
+                        </span>
                     </li>
                     <li class="flex justify-between items-center">
                         <span>Sul (S)</span>
-                        <span class="font-bold" id="dom-s">0</span>
+                        <span class="font-bold">
+                            <span id="dom-s">0</span><span class="meta-text">/25</span>
+                        </span>
                     </li>
                 </ul>
             </section>
@@ -253,7 +268,7 @@
     </div>
 
     <script>
-        // Dados corrigidos conforme sua última solicitação e análise do CSV/Print
+        // Dados atualizados com as metas precisas conforme sua instrução (D14-D18 / C14-C18)
         const finalData = {
             c1: "FLAMENGO",
             d1: "FLA",
@@ -269,13 +284,13 @@
             e7: "1",
             f10: "0",
             c21: "28", c22: "28", c23: "27", c24: "30", c25: "113",
-            // Conquistas corrigidas baseadas nas células D14 até D18 para o Flamengo
+            // Conquistas com Metas Corrigidas
             conquistas: {
-                n: "0",  // D14
-                ne: "4", // D15 (Corrigido conforme sua análise)
-                co: "0", // D16
-                se: "6", // D17 (Corrigido conforme sua análise)
-                s: "0"   // D18
+                n: { val: "0", meta: "5" },    // D14 / C14
+                ne: { val: "4", meta: "10" },  // D15 / C15
+                co: { val: "0", meta: "0" },   // D16 / C16
+                se: { val: "6", meta: "120" }, // D17 / C17
+                s: { val: "0", meta: "25" }    // D18 / C18
             },
             cronicas: [
                 { jogo: "8", local: "CASA", adv: "SAO", placar: "1 x 2", res: "DER" },
@@ -320,12 +335,12 @@
             document.getElementById('t4-val').innerText = data.c24;
             document.getElementById('total-garrisons').innerText = data.c25;
 
-            // Atualiza Conquistas com os novos mapeamentos corrigidos (D14-D18)
-            document.getElementById('dom-n').innerText = data.conquistas.n;
-            document.getElementById('dom-ne').innerText = data.conquistas.ne;
-            document.getElementById('dom-co').innerText = data.conquistas.co;
-            document.getElementById('dom-se').innerText = data.conquistas.se;
-            document.getElementById('dom-s').innerText = data.conquistas.s;
+            // Atualiza os valores na interface
+            document.getElementById('dom-n').innerText = data.conquistas.n.val;
+            document.getElementById('dom-ne').innerText = data.conquistas.ne.val;
+            document.getElementById('dom-co').innerText = data.conquistas.co.val;
+            document.getElementById('dom-se').innerText = data.conquistas.se.val;
+            document.getElementById('dom-s').innerText = data.conquistas.s.val;
 
             // Popula Crônicas
             const tableBody = document.getElementById('chronicles-body');
