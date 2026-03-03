@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ficha de Equipe RPG - Futebol Medieval</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=MedievalSharp&family=Cinzel:wght@400;700&family=Almendra:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --parchment: #f4e4bc;
+            --ink: #2c1e16;
+            --gold: #b8860b;
+            --crimson: #8b0000;
+        }
+
+        body {
+            background-color: #1a1a1a;
+            color: var(--ink);
+            font-family: 'Almendra', serif;
+            background-image: url('https://www.transparenttextures.com/patterns/dark-leather.png');
+            padding: 20px;
+        }
+
+        .parchment-bg {
+            background-color: var(--parchment);
+            background-image: url('https://www.transparenttextures.com/patterns/paper-fibers.png');
+            box-shadow: 0 0 50px rgba(0,0,0,0.8), inset 0 0 100px rgba(139, 69, 19, 0.2);
+            border: 15px solid transparent;
+            border-image: url('https://www.transparenttextures.com/patterns/aged-paper.png') 30 round;
+            position: relative;
+        }
+
+        .medieval-border {
+            border: 2px solid var(--gold);
+            position: relative;
+        }
+
+        .medieval-border::before {
+            content: "✦";
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--parchment);
+            padding: 0 10px;
+            color: var(--gold);
+        }
+
+        h1, h2, h3 {
+            font-family: 'MedievalSharp', cursive;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .stat-box {
+            background: rgba(0, 0, 0, 0.05);
+            border-bottom: 2px solid var(--ink);
+            padding: 5px 10px;
+        }
+
+        .progress-bar-container {
+            background: #d2b48c;
+            height: 20px;
+            border: 2px solid var(--ink);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            background: linear-gradient(90deg, var(--crimson), #ff4500);
+            height: 100%;
+            transition: width 0.5s ease;
+        }
+
+        .tower-icon {
+            font-size: 2rem;
+            color: #555;
+        }
+
+        .seal {
+            width: 80px;
+            height: 80px;
+            background: var(--crimson);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: gold;
+            font-weight: bold;
+            box-shadow: 2px 2px 5px rgba(0,0,0,0.5);
+            border: 4px double gold;
+            margin: auto;
+        }
+
+        .table-medieval {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0 5px;
+        }
+
+        .table-medieval th {
+            text-align: left;
+            border-bottom: 2px solid var(--ink);
+        }
+
+        .table-medieval td {
+            background: rgba(0,0,0,0.03);
+            padding: 8px;
+        }
+
+        .result-vit { color: green; font-weight: bold; }
+        .result-der { color: darkred; font-weight: bold; }
+        .result-emp { color: #555; font-weight: bold; }
+    </style>
+</head>
+<body class="flex justify-center items-start min-h-screen">
+
+    <div class="max-w-4xl w-full parchment-bg p-8 md:p-12 rounded-sm mb-10">
+        
+        <!-- CABEÇALHO: NOME E TÍTULO -->
+        <header class="text-center mb-8 border-b-2 border-double border-gray-800 pb-6">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+                <div class="text-left w-full md:w-2/3">
+                    <h1 class="text-5xl mb-2" id="team-name">FLAMENGO <span class="text-3xl opacity-75">(FLA)</span></h1>
+                    <p class="italic text-lg text-gray-700" id="team-description">
+                        Um clã de iniciantes destemidos, conhecidos por sua coragem indomável e busca por glória nos campos sagrados de batalha.
+                    </p>
+                </div>
+                <div class="w-full md:w-1/3">
+                    <div class="seal" id="power-level-label">NV 1</div>
+                    <p class="text-sm mt-1 uppercase font-bold">Nível de Poder</p>
+                </div>
+            </div>
+        </header>
+
+        <!-- ATRIBUTOS PRINCIPAIS -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+            <div class="stat-box text-center">
+                <span class="block text-xs uppercase font-bold">Influência</span>
+                <span class="text-2xl font-bold" id="influence-pts">15</span>
+            </div>
+            <div class="stat-box text-center">
+                <span class="block text-xs uppercase font-bold">Tesouro</span>
+                <span class="text-2xl font-bold" id="money-accumulated">R$ 162,00</span>
+            </div>
+            <div class="stat-box text-center">
+                <span class="block text-xs uppercase font-bold">Experiência</span>
+                <span class="text-2xl font-bold" id="xp-total">74 XP</span>
+            </div>
+            <div class="stat-box text-center">
+                <span class="block text-xs uppercase font-bold">Vitórias</span>
+                <span class="text-2xl font-bold" id="total-wins">0</span>
+            </div>
+        </div>
+
+        <!-- SENDA DA EVOLUÇÃO -->
+        <section class="mb-10">
+            <h2 class="text-2xl mb-4 flex items-center gap-2">
+                <span>⚔️</span> Senda da Evolução
+            </h2>
+            <div class="grid md:grid-cols-2 gap-8 items-center">
+                <div>
+                    <div class="flex justify-between text-sm uppercase font-bold mb-1">
+                        <span>Progresso do Nível</span>
+                        <span id="xp-needed-text">Faltam 26 XP</span>
+                    </div>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar-fill" id="xp-progress-bar" style="width: 74%;"></div>
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="p-3 border border-gray-400 rounded text-center">
+                        <span class="block text-xs uppercase">Campanha</span>
+                        <span class="text-xl font-bold" id="campaign-progress">29%</span>
+                    </div>
+                    <div class="p-3 border border-gray-400 rounded text-center">
+                        <span class="block text-xs uppercase">Partidas Perfeitas</span>
+                        <span class="text-xl font-bold" id="perfect-matches">0</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="grid md:grid-cols-2 gap-10">
+            
+            <!-- FORTIFICAÇÕES -->
+            <section>
+                <h2 class="text-2xl mb-4 border-b border-gray-400 pb-2">🏰 Fortificações</h2>
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="text-center p-2 border border-dashed border-gray-500">
+                        <div class="tower-icon">♜</div>
+                        <span class="block text-xs">Torre I</span>
+                        <span class="text-xl font-bold" id="t1-val">28</span>
+                    </div>
+                    <div class="text-center p-2 border border-dashed border-gray-500">
+                        <div class="tower-icon">♜</div>
+                        <span class="block text-xs">Torre II</span>
+                        <span class="text-xl font-bold" id="t2-val">28</span>
+                    </div>
+                    <div class="text-center p-2 border border-dashed border-gray-500">
+                        <div class="tower-icon">♜</div>
+                        <span class="block text-xs">Torre III</span>
+                        <span class="text-xl font-bold" id="t3-val">27</span>
+                    </div>
+                    <div class="text-center p-2 border border-dashed border-gray-500">
+                        <div class="tower-icon">♜</div>
+                        <span class="block text-xs">Torre IV</span>
+                        <span class="text-xl font-bold" id="t4-val">30</span>
+                    </div>
+                </div>
+                <div class="mt-4 text-center bg-gray-800 text-white p-2 rounded">
+                    Total de Guarnições: <span id="total-garrisons">113</span> / 120
+                </div>
+            </section>
+
+            <!-- DOMÍNIOS DE TERRITÓRIO -->
+            <section>
+                <h2 class="text-2xl mb-4 border-b border-gray-400 pb-2">🗺️ Domínios</h2>
+                <ul class="space-y-3">
+                    <li class="flex justify-between items-center">
+                        <span>Norte (N)</span>
+                        <div class="flex gap-2">
+                            <span class="font-bold" id="dom-n">0</span>
+                            <span class="text-xs opacity-50">/ 0</span>
+                        </div>
+                    </li>
+                    <li class="flex justify-between items-center">
+                        <span>Nordeste (NE)</span>
+                        <div class="flex gap-2">
+                            <span class="font-bold" id="dom-ne">0</span>
+                            <span class="text-xs opacity-50">/ 0</span>
+                        </div>
+                    </li>
+                    <li class="flex justify-between items-center">
+                        <span>Centro-Oeste (CO)</span>
+                        <div class="flex gap-2">
+                            <span class="font-bold" id="dom-co">0</span>
+                            <span class="text-xs opacity-50">/ 0</span>
+                        </div>
+                    </li>
+                    <li class="flex justify-between items-center">
+                        <span>Sudeste (SE)</span>
+                        <div class="flex gap-2">
+                            <span class="font-bold" id="dom-se">0</span>
+                            <span class="text-xs opacity-50">/ 0</span>
+                        </div>
+                    </li>
+                    <li class="flex justify-between items-center">
+                        <span>Sul (S)</span>
+                        <div class="flex gap-2">
+                            <span class="font-bold" id="dom-s">0</span>
+                            <span class="text-xs opacity-50">/ 0</span>
+                        </div>
+                    </li>
+                </ul>
+            </section>
+        </div>
+
+        <!-- CRÔNICAS RECENTES -->
+        <section class="mt-10">
+            <h2 class="text-2xl mb-4 border-b-2 border-gray-800 pb-2">📜 Crônicas Recentes</h2>
+            <div class="overflow-x-auto">
+                <table class="table-medieval">
+                    <thead>
+                        <tr>
+                            <th>Jogo</th>
+                            <th>Local</th>
+                            <th>Oponente</th>
+                            <th>Placar</th>
+                            <th>Resultado</th>
+                        </tr>
+                    </thead>
+                    <tbody id="chronicles-body">
+                        <!-- Gerado via script -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <footer class="mt-12 text-center text-sm border-t border-gray-400 pt-4 italic">
+            "Nas areias da arena, a história é escrita com suor e aço."
+        </footer>
+    </div>
+
+    <script>
+        // Dados extraídos manualmente baseados na leitura do CSV enviado
+        const mockData = {
+            c1: "FLAMENGO",
+            d1: "FLA",
+            a1: "15",
+            a2: "R$ 162,00",
+            d2: "1",
+            g1: "74",
+            e2: "Iniciante",
+            f2: "Destemido",
+            f1: "29%",
+            bp1: "74", // Barra de progresso (uso % ou valor relativo)
+            bo1: "26 XP", // O que falta
+            e7: "0", // Vitórias totais
+            f10: "0", // Partidas perfeitas
+            c21: "28", c22: "28", c23: "27", c24: "30", c25: "113",
+            dominios: {
+                n: { atual: 0, meta: 0 },
+                ne: { atual: 0, meta: 0 },
+                co: { atual: 0, meta: 0 },
+                se: { atual: 0, meta: 0 },
+                s: { atual: 0, meta: 0 }
+            },
+            // Simulação de jogos baseada no CSV (Rodada 1 exemplo)
+            cronicas: [
+                { jogo: 354, rodada: 1, adversario: "PAL", local: "FORA", gp: 0, gc: 0, res: "resultado" }
+            ]
+        };
+
+        function updateUI(data) {
+            // Nome e Descrição
+            document.getElementById('team-name').innerHTML = `${data.c1} <span class="text-3xl opacity-75">(${data.d1})</span>`;
+            
+            // Lógica de Descrição Medieval
+            let categoria = "";
+            const nivel = parseInt(data.d2);
+            if (nivel <= 4) categoria = "Iniciante";
+            else if (nivel <= 7) categoria = "Profissional";
+            else if (nivel <= 9) categoria = "Elite";
+            else categoria = "Lenda";
+
+            const ancestralidade = data.f2;
+            const descricoes = {
+                "Destemido": "conhecidos por nunca recuar diante de um gigante, avançando com fúria nos campos de batalha.",
+                "Equilibrado": "mestres da tática e da paciência, esperando o momento exato para desferir o golpe de misericórdia.",
+                "Audacioso": "ousados e imprevisíveis, capazes de manobras que desafiam a própria lógica dos deuses do esporte.",
+                "Idealista": "lutam por uma causa maior, movidos pela honra e pela pureza de sua técnica ancestral."
+            };
+
+            document.getElementById('team-description').innerText = `Um clã de ${categoria.toLowerCase()}s ${ancestralidade.toLowerCase()}s, ${descricoes[ancestralidade] || "em busca de glória eterna."}`;
+            
+            // Selo de Nível
+            document.getElementById('power-level-label').innerText = `NV ${data.d2}`;
+
+            // Stats
+            document.getElementById('influence-pts').innerText = data.a1;
+            document.getElementById('money-accumulated').innerText = data.a2;
+            document.getElementById('xp-total').innerText = `${data.g1} XP`;
+            document.getElementById('total-wins').innerText = data.e7;
+
+            // Progresso
+            document.getElementById('campaign-progress').innerText = data.f1;
+            document.getElementById('perfect-matches').innerText = data.f10;
+            document.getElementById('xp-needed-text').innerText = `Faltam ${data.bo1}`;
+            
+            // Barra de XP: Se o nível vai até 100 de XP (exemplo), ajustamos a largura
+            // Aqui usei o valor de BP1 como porcentagem ou progresso visual
+            document.getElementById('xp-progress-bar').style.width = `${data.bp1}%`;
+
+            // Torres
+            document.getElementById('t1-val').innerText = data.c21;
+            document.getElementById('t2-val').innerText = data.c22;
+            document.getElementById('t3-val').innerText = data.c23;
+            document.getElementById('t4-val').innerText = data.c24;
+            document.getElementById('total-garrisons').innerText = data.c25;
+
+            // Domínios
+            document.getElementById('dom-n').innerText = data.dominios.n.atual;
+            document.getElementById('dom-ne').innerText = data.dominios.ne.atual;
+            document.getElementById('dom-co').innerText = data.dominios.co.atual;
+            document.getElementById('dom-se').innerText = data.dominios.se.atual;
+            document.getElementById('dom-s').innerText = data.dominios.s.atual;
+
+            // Crônicas (Tabela)
+            const tableBody = document.getElementById('chronicles-body');
+            tableBody.innerHTML = '';
+            
+            // No CSV real, carregaríamos as linhas dinamicamente.
+            // Aqui vou popular com alguns exemplos para visualização baseados na estrutura enviada.
+            const logs = [
+                { num: "01", local: "FORA", adv: "PAL", placar: "0 x 0", res: "EMP" },
+                { num: "02", local: "CASA", adv: "INT", placar: "1 x 0", res: "VIT" },
+                { num: "03", local: "FORA", adv: "BAH", placar: "1 x 2", res: "DER" }
+            ];
+
+            logs.forEach(log => {
+                const row = document.createElement('tr');
+                let resClass = log.res === 'VIT' ? 'result-vit' : (log.res === 'DER' ? 'result-der' : 'result-emp');
+                row.innerHTML = `
+                    <td>${log.num}</td>
+                    <td>${log.local}</td>
+                    <td>${log.adv}</td>
+                    <td>${log.placar}</td>
+                    <td class="${resClass}">${log.res}</td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+
+        // Inicializa a interface
+        window.onload = () => {
+            updateUI(mockData);
+        };
+    </script>
+</body>
+</html>
